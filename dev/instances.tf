@@ -21,7 +21,7 @@ resource "aws_ami" "ubuntu" {
   ebs_block_device {
     device_name = "/dev/xvda"
     snapshot_id = aws_ebs_snapshot.ebs_snapshot.id
-    volume_size = 4
+    volume_size = 16
   }
   tags = {
     Name = var.tag_name
@@ -29,18 +29,20 @@ resource "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "dev" {
-  ami           = aws_ami.ubuntu.id
-  subnet_id     = aws_subnet.public_subnet.id
-  instance_type = "t3a.medium"
+  availability_zone = "ap-northeast-2a"
+  ami               = aws_ami.ubuntu.id
+  subnet_id         = aws_subnet.public_subnet.id
+  instance_type     = "t3a.medium"
+  user_data         = file("../install_docker.sh")
   tags = {
     Name = var.tag_name
   }
 }
 
-# resource "aws_eip" "eip" {
-#   vpc      = true
-#   instance = aws_instance.dev.id
-#   tags = {
-#     Name = var.tag_name
-#   }
-# }
+resource "aws_eip" "eip" {
+  vpc      = true
+  instance = aws_instance.dev.id
+  tags = {
+    Name = var.tag_name
+  }
+}
