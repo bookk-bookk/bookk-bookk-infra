@@ -20,8 +20,8 @@ resource "aws_instance" "dev" {
   availability_zone = "ap-northeast-2a"
   ami               = data.aws_ami.ubuntu.id
   subnet_id         = aws_subnet.public_subnet.id
-  instance_type     = "t3a.medium"
-  user_data         = file("../install_docker.sh")
+  instance_type     = "t3a.small"
+  user_data         = file("../install.sh")
   tags = {
     Name = var.tag_name
   }
