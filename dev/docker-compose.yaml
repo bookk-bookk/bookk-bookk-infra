@@ -16,7 +16,8 @@ services:
       - 80:80
     volumes:
       - /home/ubuntu/bookk-bookk-infra/dev/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - /etc/letsencrypt/live/lovelace-book.dev-daeun.com:/etc/ssl_keys/
+      - /etc/letsencrypt/live/lovelace-book.dev-daeun.com/:/etc/ssl_keys/
+      - /etc/dhparam.pem:/etc/ssl_keys/dhparam.pem
 networks:
   book_net:
     ipam:
