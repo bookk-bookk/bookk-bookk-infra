@@ -1,0 +1,26 @@
+version: "2.0"
+services:
+  fastapi:
+    image: kde6260/bookk-bookk:$BOOKK_BOOKK_VERSION
+    networks:
+      book_net:
+        ipv4_address: 172.16.238.3
+    ports:
+      - 8000:8000
+    volumes:
+      - /home/ubuntu/bookk-bookk/.env:/home/bookk-bookk/.env
+
+  nginx:
+    image: nginx:1.18.0
+    ports:
+      - 80:80
+    volumes:
+      - /home/ubuntu/bookk-bookk-infra/nginx/nginx.conf:/etc/nginx/nginx.conf
+
+networks:
+  book_net:
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.239.0/24
+        gateway: 172.16.238.1
